@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../../models/Post");
-const { findUserByName } = require("../../controllers/users");
+const User = require("../../models/User");
 const postSubmitSchema = require("../../schema/postSubmitSchema");
 const { validatePost } = require("../../middleware/postValidator");
 
@@ -58,7 +58,7 @@ router.get("/profile", async (req, res) => {
       title: "random",
       pageTitle: "Random Title",
     };
-    const user = await findUserByName(req.session.username);
+    const user = await User.findOne({ username: req.session.username });
     const postData = await Post.find({ createdBy: user });
 
     req.isAuthenticated()
@@ -117,7 +117,7 @@ router.get("/update/:id", async (req, res) => {
 
 router.post("/edit/:id", validatePost(postSubmitSchema), async (req, res) => {
   try {
-    const createdBy = await findUserByName(req.session.username);
+    const createdBy = await User.findOne({ username: req.session.username });
     const postBody = {
       title: req.body.title,
       content: req.body.content,
@@ -139,7 +139,7 @@ router.post("/edit/:id", validatePost(postSubmitSchema), async (req, res) => {
 
 router.post("/submit", validatePost(postSubmitSchema), async (req, res) => {
   try {
-    const createdBy = await findUserByName(req.session.username);
+    const createdBy = await User.findOne({ username: req.session.username });
     const postBody = {
       title: req.body.title,
       content: req.body.content,

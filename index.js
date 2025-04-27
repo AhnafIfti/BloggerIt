@@ -8,12 +8,11 @@ const connectDB = require("./models/db");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
-
+const User = require("./models/User");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
-const { findUserById, findUserByName } = require("./controllers/users");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -39,7 +38,7 @@ app.use(passport.session());
 // Configure Passport strategy
 passport.use(
   new LocalStrategy(async (username, password, done) => {
-    const user = await findUserByName(username);
+    const user = await User.findOne({ username: username });
     if (!user) return done(null, false, { message: "User not found" });
 
     const match = await bcrypt.compare(password, user.password);
@@ -54,7 +53,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await findUserById(id);
+  const user = await User.findOne({
+    _id: id,
+  });
   done(null, user);
 });
 

@@ -1,18 +1,5 @@
 const bcrypt = require("bcrypt");
-
 const User = require("../models/User");
-
-async function findUserByName(username) {
-  const user = await User.findOne({ username: username });
-  return user;
-}
-
-async function findUserById(id) {
-  const user = await User.findOne({
-    _id: id,
-  });
-  return user;
-}
 
 const getSignUp = (req, res) => {
   try {
@@ -44,4 +31,4 @@ const postRegister = async (req, res) => {
   }
 };
 
-module.exports = { findUserById, findUserByName, getSignUp, postRegister };
+module.exports = { getSignUp, postRegister };
