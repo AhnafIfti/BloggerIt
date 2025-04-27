@@ -63,7 +63,6 @@ const getProfile = async (req, res) => {
           postList: postData,
           author: user,
           username: req.session.username ?? "",
-          // searchValue: "",
         })
       : res.redirect("/login");
   } catch (err) {
@@ -123,11 +122,16 @@ const postEdit = async (req, res) => {
     };
 
     const paramId = req.params.id;
-
-    await Post.updateOne({ _id: new Object(paramId) }, postBody);
-    req.isAuthenticated()
-      ? res.redirect("/post/profile")
-      : res.redirect("/login");
+    if (req.isAuthenticated()) {
+      const result = await Post.updateOne(
+        { _id: new Object(paramId) },
+        postBody
+      );
+      if (!result) return res.status(404).send("Post not found");
+      res.redirect("/post/profile");
+    } else {
+      res.redirect("/login");
+    }
   } catch (err) {
     console.log("Error: ", err);
   }
@@ -143,9 +147,13 @@ const postSubmit = async (req, res) => {
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };
-
-    await Post.create(postBody);
-    req.isAuthenticated() ? res.redirect("/post") : res.redirect("/login");
+    if (req.isAuthenticated()) {
+      const result = await Post.create(postBody);
+      if (!result) return res.status(404).send("Post not found");
+      res.redirect("/post");
+    } else {
+      res.redirect("/login");
+    }
   } catch (err) {
     console.log("Error: ", err);
   }
@@ -171,6 +179,23 @@ const getPostById = async (req, res) => {
   }
 };
 
+const getDelete = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const paramId = req.params.id;
+    if (req.isAuthenticated()) {
+      const result = await Post.findByIdAndDelete(paramId);
+      if (!result) return res.status(404).send("Post not found");
+
+      res.redirect("/post/profile");
+    } else {
+      res.redirect("/login");
+    }
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
 module.exports = {
   getIndex,
   getSearch,
@@ -180,4 +205,5 @@ module.exports = {
   postEdit,
   postSubmit,
   getPostById,
+  getDelete,
 };
