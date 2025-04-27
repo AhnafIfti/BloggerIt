@@ -1,1 +1,19 @@
-h1 hello world
+extends layout 
+
+block content 
+    div(class="container py-4")
+        div(class="row")
+            div(class="col-12 my-4 container")
+                div(class="row justify-content-center")
+                    div(class="col-md-6 col-sm-12")
+                        form(class="d-flex", action="/post/search", method="GET") 
+                            input(class="form-control me-2", type="search", id="searchFieldId", name="searchField", placeholder="Search", aria-label="Search", value=`${searchValue}`)
+                            button(class="btn btn-outline-success" type="submit") Search 
+            hr
+            for post in postList 
+                div(class="col-sm-12 col-md-4 mb-2")
+                    a(class="card mt-2 mb-4 stretched-link text-decoration-none text-dark" href=`/post/${post._id}`)
+                        .card-body 
+                            h5(class="card-title my-2") #{post.title}
+                            p(class="card-text mb-0") #{post.createdBy.fullname}
+                            small.text-muted #{post.createdAt}

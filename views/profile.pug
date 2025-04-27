@@ -1,0 +1,22 @@
+extends layout 
+
+block content 
+    div(class="container py-4")
+        div(class="row justify-content-center")
+            div(class="container col-lg-8 col-md-12")
+                .row 
+                    div(class="col-12 d-flex mt-2 mb-4 align-items-center")
+                        div(class="col-6 blog-profile")
+                            h1 #{author.fullname}
+                            h5 #{author.email}
+                    hr
+                    div(class="col-sm-12 my-2")
+                        for post in postList
+                            div(class="card my-2") 
+                                .card-body 
+                                    h5.card-title #{post.title}
+                                    small.text-muted #{post.createdAt}
+                                    div(class="text-start mt-4")
+                                        a(href=`/post/${post._id}`, class="btn btn-primary me-2") View 
+                                        a(href=`/post/update/${post._id}`, class="btn btn-warning me-2") Update 
+                                        

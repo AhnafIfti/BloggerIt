@@ -1,0 +1,20 @@
+
+
+extends layout 
+
+block content 
+    div(class="container py-4")
+        div(class="row justify-content-center")
+            div(class="col-md-6 col-sm-12")
+                .card 
+                    div(class="card-header text-center") Login 
+                    .card-body 
+                        .my-4 
+                            form(method="POST" action="/login")
+                                div(class="mb-3 mt-3")
+                                    label(for="username", class="form-label") Username 
+                                    input(type="text", class="form-control", id="username", placeholder="Enter username", name="username")
+                                .mb-3 
+                                    label(for="password", class="form-label") Password
+                                    input(type="password", class="form-control", id="pwd", placeholder="Enter password", name="password")
+                                button(type="submit" class="btn btn-primary") Submit
