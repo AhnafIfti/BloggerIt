@@ -7,6 +7,7 @@ const userRegSchema = Joi.object({
   content: Joi.string().required().messages({
     "string.empty": "content cannot be empty",
   }),
+  tags: Joi.array().items(Joi.string()).optional(),
 });
 
 module.exports = userRegSchema;

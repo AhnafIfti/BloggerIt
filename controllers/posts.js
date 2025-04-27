@@ -116,7 +116,7 @@ const postEdit = async (req, res) => {
     const postBody = {
       title: req.body.title,
       content: req.body.content,
-      tags: ["node", "express"],
+      tags: req.body.tags,
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };
@@ -143,7 +143,7 @@ const postSubmit = async (req, res) => {
     const postBody = {
       title: req.body.title,
       content: req.body.content,
-      tags: ["node", "express"],
+      tags: req.body.tags,
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };
