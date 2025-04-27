@@ -4,19 +4,11 @@ const router = express.Router();
 const passport = require("passport");
 const userLoginSchema = require("../../schema/userLoginSchema");
 const { findByName } = require("../../models/User");
+const {
+  validateUserLogin,
+} = require("../../controllers/validators/userValidator");
 
 router.use(express.urlencoded({ extended: false }));
-
-function validateUserLogin(userLoginSchema) {
-  return (req, res, next) => {
-    const { error } = userLoginSchema.validate(req.body, { abortEarly: false });
-    if (error) {
-      console.log("error", error);
-      return res.status(400).send(error.details.map((err) => err.message));
-    }
-    next();
-  };
-}
 
 router.get("/login", (req, res) => {
   try {

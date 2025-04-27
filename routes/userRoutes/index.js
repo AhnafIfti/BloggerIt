@@ -2,15 +2,9 @@ const express = require("express");
 const router = express.Router();
 const userRegSchema = require("../../schema/userRegSchema");
 const { addUser } = require("../../controllers/users");
-
-function validateUserReg(userRegSchema) {
-  return (req, res, next) => {
-    const { error } = userRegSchema.validate(req.body, { abortEarly: false });
-    if (error)
-      return res.status(400).send(error.details.map((err) => err.message));
-    next();
-  };
-}
+const {
+  validateUserReg,
+} = require("../../controllers/validators/userValidator");
 
 router.get("/signup", async (req, res) => {
   try {
