@@ -2,18 +2,6 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
 
-async function addUser(requestBody) {
-  const body = {
-    email: requestBody.email,
-    username: requestBody.username,
-    fullname: requestBody.fullname,
-    password: await bcrypt.hash(requestBody.pswd, 10),
-    adminRole: false,
-    createdAt: Date.now(),
-  };
-  await User.create(body);
-}
-
 async function findUserByName(username) {
   const user = await User.findOne({ username: username });
   return user;
@@ -26,4 +14,34 @@ async function findUserById(id) {
   return user;
 }
 
-module.exports = { findUserById, addUser, findUserByName };
+const getSignUp = (req, res) => {
+  try {
+    const localData = {
+      title: "random",
+      pageTitle: "Random Title",
+    };
+
+    res.render("signup", { localData: localData });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+const postRegister = async (req, res) => {
+  try {
+    const requestBody = {
+      email: req.body.email,
+      username: req.body.username,
+      fullname: req.body.fullname,
+      password: await bcrypt.hash(req.body.pswd, 10),
+      adminRole: false,
+      createdAt: Date.now(),
+    };
+    await User.create(requestBody);
+    res.redirect("/login");
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+module.exports = { findUserById, findUserByName, getSignUp, postRegister };
