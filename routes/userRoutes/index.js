@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userRegSchema = require("../../schema/userRegSchema");
 const { addUser } = require("../../controllers/users");
-const {
-  validateUserReg,
-} = require("../../controllers/validators/userValidator");
+const { validateUserReg } = require("../../middleware/userValidator");
 
 router.get("/signup", async (req, res) => {
   try {

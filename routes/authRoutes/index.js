@@ -4,9 +4,7 @@ const router = express.Router();
 const passport = require("passport");
 const userLoginSchema = require("../../schema/userLoginSchema");
 const { findByName } = require("../../models/User");
-const {
-  validateUserLogin,
-} = require("../../controllers/validators/userValidator");
+const { validateUserLogin } = require("../../middleware/userValidator");
 
 router.use(express.urlencoded({ extended: false }));
 

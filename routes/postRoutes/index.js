@@ -3,7 +3,7 @@ const router = express.Router();
 const Post = require("../../models/Post");
 const { findUserByName } = require("../../controllers/users");
 const postSubmitSchema = require("../../schema/postSubmitSchema");
-const { validatePost } = require("../../controllers/validators/postValidator");
+const { validatePost } = require("../../middleware/postValidator");
 
 router.get("/", async (req, res) => {
   try {
