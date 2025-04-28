@@ -5,7 +5,7 @@ const getIndex = async (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
 
     const postData = await Post.find().populate("createdBy");
@@ -15,6 +15,7 @@ const getIndex = async (req, res) => {
       postList: postData,
       searchValue: "",
       username: req.session.username ?? "",
+      isLoggedIn: req.isAuthenticated(),
     });
   } catch (err) {
     console.log("Error: ", err);
@@ -25,7 +26,7 @@ const getSearch = async (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
 
     const searchValue = req.query.searchField;
@@ -42,6 +43,7 @@ const getSearch = async (req, res) => {
       postList: searchPost,
       searchValue: searchValue,
       username: req.session.username ?? "",
+      isLoggedIn: req.isAuthenticated(),
     });
   } catch (err) {
     console.log("Error: ", err);
@@ -52,7 +54,7 @@ const getProfile = async (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
     const user = await User.findOne({ username: req.session.username });
     const postData = await Post.find({ createdBy: user });
@@ -63,6 +65,7 @@ const getProfile = async (req, res) => {
           postList: postData,
           author: user,
           username: req.session.username ?? "",
+          isLoggedIn: req.isAuthenticated(),
         })
       : res.redirect("/login");
   } catch (err) {
@@ -74,12 +77,13 @@ const getCreate = (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
     req.isAuthenticated()
       ? res.render("form", {
           localData: localData,
           username: req.session.username ?? "",
+          isLoggedIn: req.isAuthenticated(),
           hasData: false,
           body: {},
         })
@@ -93,13 +97,14 @@ const getUpdate = async (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
     const result = await Post.findById(req.params.id);
     req.isAuthenticated()
       ? res.render("form", {
           localData: localData,
           username: req.session.username ?? "",
+          isLoggedIn: req.isAuthenticated(),
           hasData: result ? true : false,
           body: result ?? {},
           id: req.params.id,
@@ -163,7 +168,7 @@ const getPostById = async (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
 
     let slug = req.params.id;
@@ -173,6 +178,7 @@ const getPostById = async (req, res) => {
       localData: localData,
       post: postData,
       username: req.session.username ?? "",
+      isLoggedIn: req.isAuthenticated(),
     });
   } catch (err) {
     console.log("Error: ", err);

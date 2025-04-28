@@ -5,10 +5,13 @@ const getSignUp = (req, res) => {
   try {
     const localData = {
       title: "random",
-      pageTitle: "Random Title",
+      pageTitle: "Blog",
     };
 
-    res.render("signup", { localData: localData });
+    res.render("signup", {
+      localData: localData,
+      isLoggedIn: req.isAuthenticated(),
+    });
   } catch (err) {
     console.log("Error: ", err);
   }

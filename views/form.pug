@@ -2,28 +2,29 @@ extends layout
 
 block content 
     div(class="container py-4")
-        div(class="row justify-content-center")
+        div(class="row")
             div(class="container col-md-8 col-sm-12")
-            .row
+            div(class="justify-content-center row")
                 h2(class="my-4 font-weight-bolder text-center") Create New
-                div(class="col-12 mb-4")
-                div(class="my-4 mx-4")
-                    - const actionVal = hasData ? `/post/edit/${id}` : "/post/submit"
-                    form(method="POST" action=actionVal)
-                        div(class="mb-3 mt-3")
-                            label(for="title", class="form-label") Title
-                            - const valTitle = hasData ? body.title : ""
-                            input(type="text", class="form-control", id="title", placeholder="Enter title", name="title", value=valTitle)
-                        div(class="mb-3 mt-3")
-                            label(for="content") Content
-                            - const valContent = hasData ? body.content : ""
-                            textarea(class="form-control", rows="5", id="content", name="content") #{valContent}
-                        .mb-3
-                            label(for="tags", class="form-label") Tags
-                            - const tag1Val = hasData && body.tags[0] ? body.tags[0] : ""
-                            input(type="text", class="form-control my-2", id="tags", placeholder="Enter tags", name="tags", value=tag1Val)
-                            - const tag2Val = hasData && body.tags[1] ? body.tags[1] : ""
-                            input(type="text", class="form-control my-2", id="tags", placeholder="Enter tags", name="tags", value=tag2Val)
-                        - const buttonVal = hasData ? "Update" : "Post"
-                        - const buttonClass = hasData ? "btn btn-warning" : "btn btn-primary"
-                        button(type="submit", class=buttonClass) #{buttonVal}
+                .col-8
+                    hr
+                    div(class="my-4 mx-4")
+                        - const actionVal = hasData ? `/post/edit/${id}` : "/post/submit"
+                        form(method="POST" action=actionVal)
+                            div(class="mb-3 mt-3")
+                                label(for="title", class="form-label") Title
+                                - const valTitle = hasData ? body.title : ""
+                                input(type="text", class="form-control", id="title", placeholder="Enter title", name="title", value=valTitle)
+                            div(class="mb-3 mt-3")
+                                label(for="content") Content
+                                - const valContent = hasData ? body.content : ""
+                                textarea(class="form-control", rows="5", id="content", name="content") #{valContent}
+                            .mb-3
+                                label(for="tags", class="form-label") Tags
+                                - const tag1Val = hasData && body.tags[0] ? body.tags[0] : ""
+                                input(type="text", class="form-control my-2", id="tags", placeholder="Enter tags", name="tags", value=tag1Val)
+                                - const tag2Val = hasData && body.tags[1] ? body.tags[1] : ""
+                                input(type="text", class="form-control my-2", id="tags", placeholder="Enter tags", name="tags", value=tag2Val)
+                            - const buttonVal = hasData ? "Update" : "Post"
+                            - const buttonClass = hasData ? "btn btn-warning" : "btn btn-primary"
+                            button(type="submit", class=buttonClass) #{buttonVal}

@@ -2,7 +2,14 @@ const passport = require("passport");
 
 const getLogin = (req, res) => {
   try {
-    res.render("login");
+    const localData = {
+      title: "random",
+      pageTitle: "Blog",
+    };
+    res.render("login", {
+      localData: localData,
+      isLoggedIn: req.isAuthenticated(),
+    });
   } catch (err) {
     console.log("Error: ", err);
   }
