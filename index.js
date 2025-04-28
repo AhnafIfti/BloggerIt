@@ -25,7 +25,7 @@ connectDB();
 // Session middleware
 app.use(
   session({
-    secret: "secret-key",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
   })
