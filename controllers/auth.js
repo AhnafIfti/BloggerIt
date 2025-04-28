@@ -16,14 +16,19 @@ const getLogin = (req, res) => {
 };
 
 const postLogin = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.redirect("/login");
+  passport.authenticate("local", (error, user) => {
+    if (error) {
+      return next(error);
+    }
+    if (!user) {
+      return res.redirect("/login");
+    }
 
-    req.logIn(user, (err) => {
-      if (err) return next(err);
+    req.logIn(user, (error) => {
+      if (error) {
+        return next(error);
+      }
       req.session.username = user.username;
-      req.session.id = user._id;
       return res.redirect("/post/profile");
     });
   })(req, res, next);
