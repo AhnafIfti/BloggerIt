@@ -25,7 +25,7 @@ const postRegister = async (req, res) => {
       username: req.body.username,
       fullname: req.body.fullname,
       password: await bcrypt.hash(req.body.pswd, 10),
-      adminRole: false,
+      isAdmin: false,
       createdAt: Date.now(),
     };
     await User.create(requestBody);
