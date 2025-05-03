@@ -9,6 +9,7 @@ const getLogin = (req, res) => {
     res.render("login", {
       localData: localData,
       isLoggedIn: req.isAuthenticated(),
+      messages: req.flash("error"),
     });
   } catch (err) {
     console.log("Error: ", err);

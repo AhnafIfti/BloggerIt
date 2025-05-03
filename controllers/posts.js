@@ -86,6 +86,7 @@ const getCreate = (req, res) => {
           isLoggedIn: req.isAuthenticated(),
           hasData: false,
           body: {},
+          messages: req.flash("error"),
         })
       : res.redirect("/login");
   } catch (err) {
@@ -108,6 +109,7 @@ const getUpdate = async (req, res) => {
           hasData: result ? true : false,
           body: result ?? {},
           id: req.params.id,
+          messages: req.flash("error"),
         })
       : res.redirect("/login");
   } catch (err) {

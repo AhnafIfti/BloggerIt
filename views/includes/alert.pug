@@ -1,0 +1,4 @@
+if messages && messages.length 
+        ul.flash-errors 
+            each errMessage in messages 
+                div(class="alert alert-danger", role="alert") #{errMessage}

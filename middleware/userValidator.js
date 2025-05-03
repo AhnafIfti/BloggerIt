@@ -3,7 +3,10 @@ const validateUserLogin = (userLoginSchema) => {
     const { error } = userLoginSchema.validate(req.body, { abortEarly: false });
     if (error) {
       console.log("error", error);
-      return res.status(400).send(error.details.map((err) => err.message));
+
+      const messages = error.details.map((err) => err.message);
+      req.flash("error", messages);
+      return res.redirect("/login");
     }
     next();
   };
@@ -12,8 +15,13 @@ const validateUserLogin = (userLoginSchema) => {
 const validateUserReg = (userRegSchema) => {
   return (req, res, next) => {
     const { error } = userRegSchema.validate(req.body, { abortEarly: false });
-    if (error)
-      return res.status(400).send(error.details.map((err) => err.message));
+    if (error) {
+      console.log("error", error);
+
+      const messages = error.details.map((err) => err.message);
+      req.flash("error", messages);
+      return res.redirect("/user/signup");
+    }
     next();
   };
 };

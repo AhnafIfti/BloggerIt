@@ -5,7 +5,17 @@ const validatePost = (postSubmitSchema) => {
     });
     if (error) {
       console.log("Error:", error);
-      return res.status(400).send(error.details.map((err) => err.message));
+
+      const messages = error.details.map((err) => err.message);
+      req.flash("error", messages);
+      console.log(req.url);
+      if (req.url === "/submit") {
+        return res.redirect("/post/create");
+      } else if (req.url.startsWith("/edit")) {
+        return res.redirect(`/post/update/${req.params.id}`);
+      } else {
+        return res.redirect("/");
+      }
     }
     next();
   };

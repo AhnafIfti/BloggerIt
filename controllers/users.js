@@ -10,6 +10,7 @@ const getSignUp = (req, res) => {
 
     res.render("signup", {
       localData: localData,
+      messages: req.flash("error"),
       isLoggedIn: req.isAuthenticated(),
     });
   } catch (err) {
