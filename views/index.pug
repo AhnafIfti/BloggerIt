@@ -12,8 +12,14 @@ block content
             hr
             for post in postList 
                 div(class="col-sm-12 col-md-4 mb-2")
-                    a(class="card mt-2 mb-4 stretched-link text-decoration-none text-dark" href=`/post/${post._id}`)
+                    div(class="card mt-2 mb-2")
                         .card-body 
-                            h5(class="card-title my-2") #{post.title}
+                            h5.card-title #{post.title}
                             p(class="card-text mb-0") #{post.createdBy.fullname}
                             small.text-muted #{post.createdAt}
+                            div(class="text-start mt-4")
+                                a(href=`/post/${post._id}`, class="btn btn-primary me-2") View 
+                                if isLoggedIn && currentUserId === post.createdBy._id.toString()
+                                    a(href=`/post/update/${post._id}`, class="btn btn-warning me-2") Update 
+                                    form(action=`/post/delete/${post._id}?_method=DELETE`, method="POST", style="display:inline")
+                                        button(type="submit", class="btn btn-danger me-2") Delete

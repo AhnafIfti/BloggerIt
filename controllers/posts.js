@@ -16,6 +16,7 @@ const getIndex = async (req, res) => {
       searchValue: "",
       username: req.session.username ?? "",
       isLoggedIn: req.isAuthenticated(),
+      currentUserId: req.user ? req.user._id.toString() : null,
     });
   } catch (err) {
     console.log("Error: ", err);
@@ -44,6 +45,7 @@ const getSearch = async (req, res) => {
       searchValue: searchValue,
       username: req.session.username ?? "",
       isLoggedIn: req.isAuthenticated(),
+      currentUserId: req.user ? req.user._id.toString() : null,
     });
   } catch (err) {
     console.log("Error: ", err);
