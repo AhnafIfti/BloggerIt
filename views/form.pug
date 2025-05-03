@@ -9,7 +9,7 @@ block content
                 div(class="col-md-8 col-sm-12")
                     hr
                     div(class="my-4 mx-4")
-                        - const actionVal = hasData ? `/post/edit/${id}` : "/post/submit"
+                        - const actionVal = hasData ? `/post/edit/${id}?_method=PUT` : "/post/submit"
                         form(method="POST" action=actionVal)
                             div(class="mb-3 mt-3")
                                 label(for="title", class="form-label") Title

@@ -13,6 +13,7 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+const methodOverride = require("method-override");
 const flash = require("express-flash");
 
 const app = express();
@@ -20,6 +21,7 @@ const PORT = process.env.PORT;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(methodOverride((req) => req.query._method));
 app.use(flash());
 
 connectDB();

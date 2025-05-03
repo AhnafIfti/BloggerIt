@@ -19,8 +19,8 @@ router.get("/search", getSearch);
 router.get("/profile", getProfile);
 router.get("/create", getCreate);
 router.get("/update/:id", getUpdate);
-router.post("/edit/:id", validatePost(postSubmitSchema), postEdit);
-router.get("/delete/:id", getDelete);
+router.put("/edit/:id", validatePost(postSubmitSchema), postEdit);
+router.delete("/delete/:id", getDelete);
 router.post("/submit", validatePost(postSubmitSchema), postSubmit);
 router.get("/:id", getPostById);
 
