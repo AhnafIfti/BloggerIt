@@ -36,7 +36,7 @@ const getSearch = async (req, res) => {
     const searchPost = await Post.find({
       $or: [
         { title: { $regex: new RegExp(searchValue, "i") } },
-        { tag: { $regex: new RegExp(searchValue, "i") } },
+        { tags: { $regex: new RegExp(searchValue, "i") } },
       ],
     }).populate("createdBy");
     res.render("index", {
@@ -125,7 +125,7 @@ const postEdit = async (req, res) => {
     const postBody = {
       title: req.body.title,
       content: req.body.content,
-      tags: req.body.tags,
+      tags: req.body.tags[0].split(",").map((t) => t.trim()),
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };
@@ -152,7 +152,7 @@ const postSubmit = async (req, res) => {
     const postBody = {
       title: req.body.title,
       content: req.body.content,
-      tags: req.body.tags,
+      tags: req.body.tags[0].split(",").map((t) => t.trim()),
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };

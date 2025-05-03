@@ -8,7 +8,7 @@ const isPostOwner = async (req, res, next) => {
       return res.redirect("/post");
     }
 
-    if (post.author.toString() !== req.user._id.toString()) {
+    if (post.createdBy.toString() !== req.user._id.toString()) {
       return res.redirect("/post");
     }
 
