@@ -10,7 +10,7 @@ const getIndex = async (req, res) => {
 
     const postData = await Post.find().populate("createdBy");
 
-    res.render("index", {
+    res.json({
       localData: localData,
       postList: postData,
       searchValue: "",
@@ -39,7 +39,7 @@ const getSearch = async (req, res) => {
         { tags: { $regex: new RegExp(searchValue, "i") } },
       ],
     }).populate("createdBy");
-    res.render("index", {
+    res.json({
       localData: localData,
       postList: searchPost,
       searchValue: searchValue,
@@ -52,24 +52,30 @@ const getSearch = async (req, res) => {
   }
 };
 
+const test = async (req, res) => {
+  return res.json({
+    res: req.isAuthenticated(),
+  });
+};
+
 const getProfile = async (req, res) => {
   try {
     const localData = {
       title: "random",
       pageTitle: "Blog",
     };
-    const user = await User.findOne({ username: req.session.username });
+    const user = await User.findById(req.params.id);
     const postData = await Post.find({ createdBy: user });
 
-    req.isAuthenticated()
-      ? res.render("profile", {
-          localData: localData,
-          postList: postData,
-          author: user,
-          username: req.session.username ?? "",
-          isLoggedIn: req.isAuthenticated(),
-        })
-      : res.redirect("/login");
+    // req.isAuthenticated()?
+    res.json({
+      localData: localData,
+      postList: postData,
+      author: user,
+      username: req.session.username ?? "",
+      isLoggedIn: req.isAuthenticated(),
+    });
+    // : res.redirect("/login");
   } catch (err) {
     console.log("Error: ", err);
   }
@@ -121,7 +127,7 @@ const getUpdate = async (req, res) => {
 
 const postEdit = async (req, res) => {
   try {
-    const createdBy = await User.findOne({ username: req.session.username });
+    const createdBy = await User.findById(req.params.userId);
     const postBody = {
       title: req.body.title,
       content: req.body.content,
@@ -131,16 +137,20 @@ const postEdit = async (req, res) => {
     };
 
     const paramId = req.params.id;
-    if (req.isAuthenticated()) {
-      const result = await Post.updateOne(
-        { _id: new Object(paramId) },
-        postBody
-      );
-      if (!result) return res.status(404).send("Post not found");
-      res.redirect("/post/profile");
+    // if (req.isAuthenticated()) {
+    const result = await Post.updateOne({ _id: new Object(paramId) }, postBody);
+    if (!result) {
+      return res.status(404).send("Post not found");
     } else {
-      res.redirect("/login");
+      return res.json({
+        user: createdBy,
+        post: result,
+      });
     }
+    // res.redirect("/post/profile");
+    // } else {
+    //   res.redirect("/login");
+    // }
   } catch (err) {
     console.log("Error: ", err);
   }
@@ -148,7 +158,7 @@ const postEdit = async (req, res) => {
 
 const postSubmit = async (req, res) => {
   try {
-    const createdBy = await User.findOne({ username: req.session.username });
+    const createdBy = await User.findById(req.params.id);
     const postBody = {
       title: req.body.title,
       content: req.body.content,
@@ -156,13 +166,19 @@ const postSubmit = async (req, res) => {
       createdBy: createdBy._id,
       createdAt: Date.now(),
     };
-    if (req.isAuthenticated()) {
-      const result = await Post.create(postBody);
-      if (!result) return res.status(404).send("Post not found");
-      res.redirect("/post");
+    // if (req.isAuthenticated()) {
+    const result = await Post.create(postBody);
+    if (!result) {
+      return res.status(404).send("Post not found");
     } else {
-      res.redirect("/login");
+      return res.json({
+        success: true,
+      });
     }
+    // res.redirect("/post");
+    // } else {
+    //   res.redirect("/login");
+    // }
   } catch (err) {
     console.log("Error: ", err);
   }
@@ -178,7 +194,7 @@ const getPostById = async (req, res) => {
     let slug = req.params.id;
 
     const postData = await Post.findOne({ _id: slug }).populate("createdBy");
-    res.render("post", {
+    res.json({
       localData: localData,
       post: postData,
       username: req.session.username ?? "",
@@ -216,4 +232,5 @@ module.exports = {
   postSubmit,
   getPostById,
   getDelete,
+  test,
 };
