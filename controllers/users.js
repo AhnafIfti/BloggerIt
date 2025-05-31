@@ -51,101 +51,10 @@ const getUsers = async (req, res) => {
   }
 };
 
-const makeSubscription = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    const newSub = req.body.id;
-
-    if (!newSub) {
-      return res
-        .status(400)
-        .json({ message: "No id provided to add to tags." });
-    }
-
-    const updatedSub = [...user.isFollowing, newSub];
-
-    const postBody = {
-      fullname: user.fullname,
-      email: user.email,
-      username: user.username,
-      password: user.password,
-      createdAt: user.createdAt,
-      isAdmin: user.adminRole,
-      isFollowing: updatedSub,
-    };
-
-    const result = await User.updateOne(
-      {
-        _id: new Object(req.params.id),
-      },
-      postBody
-    );
-
-    if (!result) {
-      return res.status(404).send("Post not found");
-    } else {
-      return res.json({
-        result: result,
-      });
-    }
-  } catch (err) {
-    console.log("Error: ", err);
-  }
-};
-
-const removeSubscription = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    const newSub = req.body.id;
-
-    if (!newSub) {
-      return res
-        .status(400)
-        .json({ message: "No id provided to add to tags." });
-    }
-
-    let updatedSub = user.isFollowing || [];
-    if (updatedSub.includes(newSub)) {
-      updatedSub = updatedSub.filter((item) => item !== newSub);
-    } else {
-      return res
-        .status(400)
-        .json({ message: "ID not found in isFollowing list." });
-    }
-
-    const postBody = {
-      fullname: user.fullname,
-      email: user.email,
-      username: user.username,
-      password: user.password,
-      createdAt: user.createdAt,
-      isAdmin: user.adminRole,
-      isFollowing: updatedSub,
-    };
-
-    const result = await User.updateOne(
-      {
-        _id: new Object(req.params.id),
-      },
-      postBody
-    );
-
-    if (!result) {
-      return res.status(404).send("Post not found");
-    } else {
-      return res.json({
-        result: result,
-      });
-    }
-  } catch (err) {
-    console.log("Error: ", err);
-  }
-};
-
 module.exports = {
   getSignUp,
   postRegister,
   getUsers,
-  makeSubscription,
-  removeSubscription,
+  // makeSubscription,
+  // removeSubscription,
 };
