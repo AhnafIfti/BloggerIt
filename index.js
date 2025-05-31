@@ -9,6 +9,7 @@ const connectDB = require("./models/db");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const User = require("./models/User");
 const session = require("express-session");
 const passport = require("passport");
@@ -130,6 +131,7 @@ app.use(express.static("public"));
 app.use("/", authRoutes);
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
+app.use("/subscription", subscriptionRoutes);
 
 // Google OAuth Routes
 app.get(
